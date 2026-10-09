@@ -48,7 +48,7 @@ python src/main.py
 ![Sequence Diagram](uml/IMG_0173.jpeg)
 
 ### 4. Activity Diagram
-![Activity Diagram](uml/IMG_070.jpeg)
+![Activity Diagram](uml/IMG_0170.jpeg)
 
 
 
