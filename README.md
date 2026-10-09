@@ -21,6 +21,21 @@ The Ride-Hailing System is an object-oriented software solution designed to conn
 * **Design & Modeling:** Draw.io (UML Diagrams) & Mermaid.js
 * **Version Control:** Git & GitHub
 
+## Setup / Execution Instructions
+* **Clone the repository**
+
+
+git clone [https://github.com/your-username/ride-hailing-system.git](https://github.com/your-username/ride-hailing-system.git)
+cd ride-hailing-system
+
+* **Ensure Python 3.x is installed on your system**
+
+
+* **Run the main simulation script**
+
+python src/main.py
+
+
 ## Project Structure
 ```text
 ride-hailing-system/
@@ -40,3 +55,4 @@ ride-hailing-system/
 │   └── activity_diagram.png
 │
 └── README.md                 # Project documentation
+
