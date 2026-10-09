@@ -1,12 +1,13 @@
 class Payment:
-    def __init__(self, payment_id: str, amount: float, method: str):
-        self.payment_id = payment_id
+    def __init__(self, paymentid: str, amount: float):
+        self.paymentid = paymentid
         self.amount = amount
-        self.method = method  # Cash, GCash, Credit Card
-        self.status = "PENDING"
+        self.isPaid = False
 
-    def process_payment(self):
-        # Simulating payment execution
-        self.status = "SUCCESS"
-        print(f"Successfully processed payment of ₱{self.amount:.2f} via {self.method}.")
+    def process_payment(self) -> bool:
+        self.isPaid = True
+        print(f"Payment {self.paymentid} amounting to ₱{self.amount:.2f} successfully processed.")
+        return self.isPaid
 
+    def get_amount(self) -> float:
+        return self.amount
