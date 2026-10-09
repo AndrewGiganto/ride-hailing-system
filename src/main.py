@@ -1,40 +1,35 @@
 from src.models.user import Passenger, Driver
+from src.models.location import Location
 from src.models.ride import Ride
-from src.models.payment import Payment
 
 def main():
     print("=== Ride-Hailing System Simulation ==-\n")
 
-    # 1. Create Users
-    passenger = Passenger("P001", "Juan Dela Cruz", "juan@email.com", "09123456789")
-    driver = Driver("D001", "Pedro Santos", "pedro@email.com", "09987654321", "Honda Click (ABC-1234)")
+    # 1. Initialize Locations
+    pickup_loc = Location("IT Park, Cebu City", 10.3291, 123.9065)
+    dropoff_loc = Location("SM City Cebu", 10.3121, 123.9376)
 
-    print(f"Registered {passenger.display_role()}: {passenger.name}")
-    print(f"Registered {driver.display_role()}: {driver.name} ({driver.vehicle_details})\n")
+    # 2. Create Users matching class diagram parameters
+    passenger = Passenger("P001", "Andrew Giganto", "09123456789")
+    driver = Driver("D001", "Juan Santos", "09987654321", "Honda Click 125i (ABC-1234)")
 
-    # 2. Passenger requests a ride
-    passenger.request_ride("IT Park, Cebu City", "SM City Cebu")
-    ride = Ride("R1001", passenger, "IT Park, Cebu City", "SM City Cebu")
+    print(f"Passenger Registered: {passenger.get_name()}")
+    print(f"Driver Registered: {driver.get_name()} ({driver.vehicleDetails})\n")
 
-    # 3. Calculate fare (e.g., 5 km distance)
-    fare = ride.calculate_fare(5.0)
-    print(f"Estimated Fare: ₱{fare:.2f}")
+    # 3. Passenger Books Ride
+    passenger.book_ride(pickup_loc, dropoff_loc)
+    ride = Ride("R1001", passenger, pickup_loc, dropoff_loc)
 
-    # 4. Driver accepts ride
-    if driver.is_available:
-        driver.accept_ride(ride.ride_id)
+    # 4. Driver Accepts Ride
+    if driver.isAvailable:
+        driver.accept_ride(ride)
         ride.assign_driver(driver)
 
-    # 5. Trip progress updates
-    ride.update_status("IN_PROGRESS")
-    ride.update_status("COMPLETED")
+    # 5. Trip Workflow Execution (matching sequence & activity diagrams)
+    ride.start_trip()
+    ride.complete_trip()
 
-    # 6. Process Payment
-    payment = Payment("PAY-9988", ride.fare, "GCash")
-    payment.process_payment()
-
-    print("\n=== Simulation Complete ===")
+    print("\n=== Simulation Finished Successfully ===")
 
 if __name__ == "__main__":
     main()
-
