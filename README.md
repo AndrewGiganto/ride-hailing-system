@@ -36,6 +36,22 @@ cd ride-hailing-system
 python src/main.py
 
 
+## UML Diagrams
+
+### 1. Use Case Diagram
+![Use Case Diagram](uml/IMG_0169.jpg)
+
+### 2. Class Diagram
+![Class Diagram](uml/IMG_0176.jpg)
+
+### 3. Sequence Diagram
+![Sequence Diagram](uml/IMG_0173.jpg)
+
+### 4. Activity Diagram
+![Activity Diagram](uml/IMG_070.jpg)
+
+
+
 ## Project Structure
 ```text
 ride-hailing-system/
@@ -55,4 +71,7 @@ ride-hailing-system/
 │   └── activity_diagram.png
 │
 └── README.md                 # Project documentation
+
+
+
 
