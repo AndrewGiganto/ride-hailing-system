@@ -39,16 +39,16 @@ python src/main.py
 ## UML Diagrams
 
 ### 1. Use Case Diagram
-![Use Case Diagram](uml/IMG_0169.jpg)
+![Use Case Diagram](uml/IMG_0169.jpeg)
 
 ### 2. Class Diagram
-![Class Diagram](uml/IMG_0176.jpg)
+![Class Diagram](uml/IMG_0176.jpeg)
 
 ### 3. Sequence Diagram
-![Sequence Diagram](uml/IMG_0173.jpg)
+![Sequence Diagram](uml/IMG_0173.jpeg)
 
 ### 4. Activity Diagram
-![Activity Diagram](uml/IMG_070.jpg)
+![Activity Diagram](uml/IMG_070.jpeg)
 
 
 
