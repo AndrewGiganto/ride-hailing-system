@@ -1,42 +1,36 @@
-from abc import ABC, abstractmethod
-
-class User(ABC):
-    def __init__(self, user_id: str, name: str, email: str, phone: str):
-        self._user_id = user_id
+class User:
+    def __init__(self, Id: str, name: str, phoneNumber: str):
+        self._Id = Id
         self._name = name
-        self._email = email
-        self._phone = phone
+        self._phoneNumber = phoneNumber
 
-    @property
-    def name(self):
+    def get_name(self) -> str:
         return self._name
-
-    @abstractmethod
-    def display_role(self):
-        pass
 
 
 class Passenger(User):
-    def __init__(self, user_id: str, name: str, email: str, phone: str):
-        super().__init__(user_id, name, email, phone)
-        self.payment_methods = []
+    def __init__(self, Id: str, name: str, phoneNumber: str):
+        super().__init__(Id, name, phoneNumber)
 
-    def request_ride(self, pickup: str, dropoff: str):
-        print(f"Passenger {self._name} requested a ride from {pickup} to {dropoff}.")
+    def book_ride(self, pickup, dropoff):
+        print(f"Passenger {self._name} booked a ride from {pickup.get_address()} to {dropoff.get_address()}.")
 
-    def display_role(self):
-        return "Passenger"
+    def cancel_trip(self, ride):
+        print(f"Passenger {self._name} requested to cancel the trip.")
 
 
 class Driver(User):
-    def __init__(self, user_id: str, name: str, email: str, phone: str, vehicle_details: str):
-        super().__init__(user_id, name, email, phone)
-        self.vehicle_details = vehicle_details
-        self.is_available = True
+    def __init__(self, Id: str, name: str, phoneNumber: str, vehicleDetails: str):
+        super().__init__(Id, name, phoneNumber)
+        self.vehicleDetails = vehicleDetails
+        self.isAvailable = True
 
-    def accept_ride(self, ride_id: str):
-        self.is_available = False
-        print(f"Driver {self._name} accepted ride {ride_id}.")
+    def accept_ride(self, ride):
+        self.isAvailable = False
+        print(f"Driver {self._name} accepted the ride.")
 
-    def display_role(self):
-        return "Driver"
+    def cancel_trip(self, ride):
+        print(f"Driver {self._name} cancelled the ride.")
+
+    def set_available(self, status: bool):
+        self.isAvailable = status
