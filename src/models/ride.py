@@ -1,27 +1,30 @@
-from src.models.passenger import Passenger
-from src.models.driver import Driver
+from src.models.user import Passenger, Driver
+from src.models.location import Location
+from src.models.payment import Payment
 
 class Ride:
-    def __init__(self, ride_id: str, passenger: Passenger, pickup: str, dropoff: str):
-        self.ride_id = ride_id
+    def __init__(self, rideId: str, passenger: Passenger, pickup: Location, dropoff: Location):
+        self.rideId = rideId
         self.passenger = passenger
-        self.driver = None
         self.pickup = pickup
         self.dropoff = dropoff
-        self.status = "REQUESTED"  # REQUESTED, ACCEPTED, IN_PROGRESS, COMPLETED, CANCELLED
-        self.fare = 0.0
-
-    def calculate_fare(self, distance_km: float):
-        base_fare = 50.0  # PHP base fare
-        per_km_rate = 15.0
-        self.fare = base_fare + (distance_km * per_km_rate)
-        return self.fare
+        self.driver = None
+        self.status = "REQUESTED"
+        self.payment = Payment(f"PAY-{rideId}", 180.0)
 
     def assign_driver(self, driver: Driver):
         self.driver = driver
-        self.status = "ACCEPTED"
+        self.status = "ASSIGNED"
 
-    def update_status(self, new_status: str):
-        self.status = new_status
-        print(f"Ride {self.ride_id} status updated to: {self.status}")
+    def start_trip(self):
+        self.status = "IN_PROGRESS"
+        print(f"Trip {self.rideId} has started.")
 
+    def complete_trip(self):
+        self.status = "COMPLETED"
+        print(f"Trip {self.rideId} has been completed.")
+        self.payment.process_payment()
+
+    def cancel_trip(self, reason: str):
+        self.status = "CANCELLED"
+        print(f"Trip {self.rideId} was cancelled. Reason: {reason}")
