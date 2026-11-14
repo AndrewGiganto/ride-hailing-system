@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VELOCE.OS | Enterprise Ride-Hailing Platform</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="./public/css/style.css">
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- TOP NAVIGATION & ROLE SWITCHER -->
+  <header class="border-b border-slate-800 bg-[#0b0f17]/95 backdrop-blur sticky top-0 z-30 px-4 py-3">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-[#00f0ff] to-[#ff1744] flex items-center justify-center font-bold text-slate-950 text-lg shadow-lg shadow-cyan-500/20">
+          V
+        </div>
+        <div>
+          <h1 class="font-bold tracking-wider text-white text-sm sm:text-base">VELOCE<span class="text-[#00f0ff]">.OS</span></h1>
+          <p class="text-[11px] text-slate-400 font-mono">Distributed Ride-Hailing Architecture v1.0</p>
+        </div>
+      </div>
+
+      <!-- Account Role Switcher -->
+      <div class="flex bg-slate-900 p-1 rounded-xl border border-slate-800">
+        <button onclick="switchView('customer')" id="tab-customer" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition bg-[#00f0ff] text-slate-950">
+          Customer Portal
+        </button>
+        <button onclick="switchView('rider')" id="tab-rider" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition text-slate-400 hover:text-white">
+          Driver Dashboard
+        </button>
+        <button onclick="switchView('split')" id="tab-split" class="hidden md:block px-3 py-1.5 rounded-lg text-xs font-semibold transition text-slate-400 hover:text-white">
+          Dual Split View
+        </button>
+      </div>
+
+      <!-- Global System Status -->
+      <div class="flex items-center gap-2 bg-slate-900/90 border border-slate-800 px-3 py-1.5 rounded-lg">
+        <span class="w-2 h-2 rounded-full bg-[#00f0ff] animate-pulse"></span>
+        <span class="text-xs font-mono text-slate-300">STATUS: <strong id="global-status" class="text-[#00f0ff]">IDLE</strong></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-4">
+
+    <!-- ACCOUNTS WORKSPACE (8 Cols) -->
+    <div id="accounts-grid" class="lg:col-span-8 grid grid-cols-1 gap-4">
+
+      <!-- ==================== CUSTOMER PORTAL PANEL ==================== -->
+      <section id="panel-customer" class="bg-[#0d121c] border border-slate-800 rounded-2xl p-5 flex flex-col justify-between neon-blue-glow">
+        <div>
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-[#00f0ff]/15 border border-[#00f0ff]/40 flex items-center justify-center text-[#00f0ff] font-bold">
+                AM
+              </div>
+              <div>
+                <span class="text-[10px] font-mono uppercase tracking-wider text-[#00f0ff] bg-[#00f0ff]/10 px-2 py-0.5 rounded">Passenger Service Instance</span>
+                <h2 class="text-base font-bold text-white mt-0.5">Alex Mateo <span class="text-xs font-mono text-slate-400">(P-001)</span></h2>
+              </div>
+            </div>
+            <div class="text-right font-mono text-xs text-slate-400">
+              <div>+63 917 123 4567</div>
+              <div class="text-emerald-400">● Verified Account</div>
+            </div>
+          </div>
+
+          <!-- Location Selectors -->
+          <div class="space-y-3 mb-4">
+            <div>
+              <label class="block text-xs font-mono text-slate-400 mb-1">PICKUP LOCATION (Location Model)</label>
+              <select id="pickup-select" onchange="handleRouteUpdate()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-[#00f0ff]">
+                <option value="0">IT Park, Lahug, Cebu City (10.3300, 123.9060)</option>
+                <option value="1">SM City Cebu, Mabolo (10.3119, 123.9181)</option>
+                <option value="2">Fuente Osmeña Circle (10.3103, 123.8931)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-mono text-slate-400 mb-1">DROPOFF LOCATION (Location Model)</label>
+              <select id="dropoff-select" onchange="handleRouteUpdate()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-[#ff1744]">
+                <option value="1">SM City Cebu, Mabolo (10.3119, 123.9181)</option>
+                <option value="2">Fuente Osmeña Circle (10.3103, 123.8931)</option>
+                <option value="3">Ayala Center Cebu (10.3181, 123.9056)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Live Visualizer -->
+          <div class="relative h-36 rounded-xl border border-slate-800 grid-bg overflow-hidden mb-4 p-3 flex flex-col justify-between">
+            <div class="flex justify-between items-center z-10">
+              <span class="text-[11px] font-mono bg-slate-950/80 px-2 py-1 rounded border border-slate-800 text-[#00f0ff]" id="map-pickup-label">Pickup: IT Park</span>
+              <span class="text-[11px] font-mono bg-slate-950/80 px-2 py-1 rounded border border-slate-800 text-[#ff1744]" id="map-dropoff-label">Dropoff: SM City</span>
+            </div>
+            <div class="my-auto px-4">
+              <div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                <div id="trip-progress-bar" class="h-full bg-gradient-to-r from-[#00f0ff] to-[#ff1744] w-0 transition-all duration-700"></div>
+              </div>
+              <div class="flex justify-between text-[10px] font-mono text-slate-400 mt-1">
+                <span>ORIGIN</span>
+                <span id="trip-stage-text">Ready to dispatch</span>
+                <span>DESTINATION</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center text-xs font-mono">
+              <span class="text-slate-400">Estimated Fare (<span class="text-white">Payment</span>):</span>
+              <span class="text-base font-bold text-[#00f0ff]" id="fare-display">₱180.00</span>
+            </div>
+          </div>
+
+          <!-- Ride Info Box -->
+          <div id="customer-ride-info" class="hidden bg-slate-900/90 border border-slate-800 rounded-xl p-3 mb-4 text-xs space-y-1.5">
+            <div class="flex justify-between"><span class="text-slate-400 font-mono">Ride UUID:</span><span class="font-mono font-bold text-white" id="cust-ride-id">-</span></div>
+            <div class="flex justify-between"><span class="text-slate-400 font-mono">Assigned Driver:</span><span class="font-semibold text-[#00f0ff]" id="cust-driver-name">Dispatching...</span></div>
+            <div class="flex justify-between"><span class="text-slate-400 font-mono">Payment State:</span><span class="font-mono" id="cust-payment-status">UNPAID (isPaid=False)</span></div>
+          </div>
+        </div>
+
+        <div class="flex gap-2 pt-2">
+          <button id="btn-book" onclick="executeBookRide()" class="flex-1 bg-[#00f0ff] hover:bg-[#00d8e6] text-slate-950 font-bold py-2.5 px-4 rounded-xl text-sm transition">
+            Book Ride
+          </button>
+          <button id="btn-cust-cancel" onclick="executeCancelRide('Passenger requested cancellation')" disabled class="bg-slate-800 disabled:opacity-40 hover:bg-[#ff1744] hover:text-white text-slate-300 font-semibold py-2.5 px-4 rounded-xl text-sm transition">
+            Cancel
+          </button>
+        </div>
+      </section>
+
+      <!-- ==================== RIDER (DRIVER) DASHBOARD PANEL ==================== -->
+      <section id="panel-rider" class="hidden bg-[#0d121c] border border-slate-800 rounded-2xl p-5 flex flex-col justify-between crimson-glow">
+        <div>
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-[#ff1744]/15 border border-[#ff1744]/40 flex items-center justify-center text-[#ff1744] font-bold">
+                KB
+              </div>
+              <div>
+                <span class="text-[10px] font-mono uppercase tracking-wider text-[#ff1744] bg-[#ff1744]/10 px-2 py-0.5 rounded">Driver Node Instance</span>
+                <h2 class="text-base font-bold text-white mt-0.5">Kuya Ben <span class="text-xs font-mono text-slate-400">(D-001)</span></h2>
+              </div>
+            </div>
+            <button onclick="toggleDutyStatus()" id="btn-duty-toggle" class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+              ● ONLINE (isAvailable=True)
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="bg-slate-900/90 border border-slate-800 p-3 rounded-xl">
+              <div class="text-[11px] font-mono text-slate-400">VEHICLE ASSIGNMENT</div>
+              <div class="text-sm font-semibold text-white mt-0.5">Toyota Vios • ABC 1234</div>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-800 p-3 rounded-xl">
+              <div class="text-[11px] font-mono text-slate-400">SESSION EARNINGS</div>
+              <div class="text-sm font-mono font-bold text-emerald-400 mt-0.5" id="driver-earnings">₱0.00</div>
+            </div>
+          </div>
+
+          <div id="driver-job-box" class="bg-slate-900/70 border border-dashed border-slate-700 rounded-xl p-4 mb-4 min-h-[165px] flex flex-col justify-center">
+            <div id="driver-idle-msg" class="text-center text-slate-400 text-xs font-mono">
+              Listening for passenger broadcasts...<br/>
+              <span class="text-[11px] text-slate-500">(Switch to Customer Portal to dispatch a ride)</span>
+            </div>
+            <div id="driver-active-job" class="hidden space-y-2 text-xs">
+              <div class="flex items-center justify-between">
+                <span class="px-2 py-0.5 rounded bg-[#ff1744]/20 text-[#ff1744] font-mono font-bold" id="drv-job-badge">NEW REQUEST</span>
+                <span class="font-mono font-bold text-emerald-400 text-sm" id="drv-job-fare">₱180.00</span>
+              </div>
+              <div class="pt-1">
+                <div class="text-slate-400 font-mono text-[11px]">PASSENGER:</div>
+                <div class="text-white font-semibold" id="drv-passenger-name">Alex Mateo</div>
+              </div>
+              <div>
+                <div class="text-slate-400 font-mono text-[11px]">COORDINATES ROUTE:</div>
+                <div class="text-slate-200" id="drv-route-text">-</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 pt-2">
+          <button id="btn-accept" onclick="executeAcceptRide()" disabled class="bg-emerald-500 disabled:opacity-35 hover:bg-emerald-400 text-slate-950 font-bold py-2.5 px-3 rounded-xl text-xs transition">
+            1. Accept Job
+          </button>
+          <button id="btn-start" onclick="executeStartTrip()" disabled class="bg-[#00f0ff] disabled:opacity-35 hover:bg-[#00d8e6] text-slate-950 font-bold py-2.5 px-3 rounded-xl text-xs transition">
+            2. Start Trip
+          </button>
+          <button id="btn-complete" onclick="executeCompleteTrip()" disabled class="bg-indigo-500 disabled:opacity-35 hover:bg-indigo-400 text-white font-bold py-2.5 px-3 rounded-xl text-xs transition">
+            3. Complete & Collect
+          </button>
+          <button id="btn-drv-cancel" onclick="executeCancelRide('Driver cancelled job')" disabled class="bg-slate-800 disabled:opacity-35 hover:bg-[#ff1744] text-white font-semibold py-2.5 px-3 rounded-xl text-xs transition">
+            Cancel Job
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- RIGHT COLUMN: OOP STATE INSPECTOR & STDOUT CONSOLE (4 Cols) -->
+    <aside class="lg:col-span-4 bg-[#0b0f17] border border-slate-800 rounded-2xl p-4 flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
+          <span class="text-xs font-mono font-bold text-[#00f0ff]">PYTHON OOP INSTANCE STATE</span>
+          <button onclick="resetSystem()" class="text-[11px] font-mono text-slate-400 hover:text-white underline">Reset State</button>
+        </div>
+
+        <pre id="oop-inspector" class="bg-slate-950 border border-slate-800/80 rounded-xl p-3 text-[11px] font-mono text-emerald-300 overflow-x-auto mb-4 leading-relaxed"></pre>
+
+        <div class="text-xs font-mono font-bold text-slate-400 mb-2">STDOUT TERMINAL LOGS</div>
+        <div id="console-logs" class="bg-slate-950 border border-slate-800/80 rounded-xl p-3 h-48 overflow-y-auto font-mono text-[11px] space-y-1.5 text-slate-300">
+          <div class="text-slate-500"># System modules loaded successfully. Ready.</div>
+        </div>
+      </div>
+
+      <div class="mt-4 pt-3 border-t border-slate-800 text-[11px] text-slate-500 font-mono">
+        Models: Location, Payment, User, Passenger, Driver, Ride
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- External JS Scripts -->
+  <script src="./public/js/models.js"></script>
+  <script src="./public/js/app.js"></script>
+</body>
+</html>
